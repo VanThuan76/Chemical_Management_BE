@@ -8,7 +8,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-- Java Development Kit (JDK) 8 or higher
+- Java Development Kit (JDK) 21
 - Maven
 
 ### Installing
