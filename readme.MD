@@ -88,3 +88,4 @@ Authorization: Bearer <JWT token>
 - Project Lombok - Java library that helps to reduce boilerplate code
 - JUnit - Unit testing framework for Java
 - Auth0 Java JWT - Library for working with JSON Web Tokens (JWT) in Java
+- Flyway - Database migration tool for java
