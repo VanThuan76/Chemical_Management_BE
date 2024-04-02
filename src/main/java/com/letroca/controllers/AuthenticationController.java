@@ -7,6 +7,7 @@ import com.letroca.entities.users.User;
 import com.letroca.infra.security.TokenService;
 import com.letroca.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping(value = "/auth", produces = {"application/json"})
 public class AuthenticationController {
 
     @Autowired
@@ -27,9 +28,15 @@ public class AuthenticationController {
     @Autowired
     private TokenService tokenService;
 
-    @PostMapping("/login")
-    public ResponseEntity login(@RequestBody AuthenticationDTO authenticationDTO) {
-        var credentials = new UsernamePasswordAuthenticationToken(authenticationDTO.email(), authenticationDTO.password());
+    /**
+     * Authenticates user login.
+     *
+     * @param data Object containing user credentials
+     * @return ResponseEntity containing authentication token
+     */
+    @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity login(@RequestBody AuthenticationDTO data) {
+        var credentials = new UsernamePasswordAuthenticationToken(data.email(), data.password());
         var auth = this.authenticationManager.authenticate(credentials);
 
         var token = tokenService.generateToken((User) auth.getPrincipal());
@@ -37,7 +44,13 @@ public class AuthenticationController {
         return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 
-    @PostMapping("/register")
+    /**
+     * Registers a new user.
+     *
+     * @param data Object containing user registration data
+     * @return ResponseEntity indicating success or failure of registration
+     */
+    @PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity register(@RequestBody RegisterDTO data) {
         if (this.userRepository.findByEmail(data.email()) != null) return ResponseEntity.badRequest().build();
 
