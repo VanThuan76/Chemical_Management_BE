@@ -8,13 +8,13 @@
 		<version>3.2.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.letroca</groupId>
-	<artifactId>letroca</artifactId>
+	<groupId>com.chemical</groupId>
+	<artifactId>chemical</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>letroca</name>
-	<description>Uma plataforma de troca de livros entre usuários. A ideia é criar uma comunidade onde os amantes da leitura possam trocar livros que já leram por outros que desejam ler, promovendo assim a reutilização e a sustentabilidade.</description>
+	<name>chemical</name>
+	<description>Chemical Management</description>
 	<properties>
-		<java.version>21</java.version>
+		<java.version>17</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -35,6 +35,11 @@
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.modelmapper</groupId>
+			<artifactId>modelmapper</artifactId>
+			<version>2.4.4</version>
+		</dependency>
+		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
@@ -48,6 +53,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.validation</groupId>
+			<artifactId>jakarta.validation-api</artifactId>
+			<version>3.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.auth0</groupId>
