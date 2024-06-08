@@ -13,14 +13,10 @@ import java.io.Serializable;
 public class Permission extends BaseEntity implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
 
     @Column(nullable = false, unique = true)
     private String table_key;
-
-    public Permission(String table_key) {
-        this.table_key = table_key;
-    }
 
 }

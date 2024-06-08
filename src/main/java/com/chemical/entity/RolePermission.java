@@ -33,4 +33,18 @@ public class RolePermission extends BaseEntity implements Serializable {
     @JsonIgnoreProperties(value = {"role_permission"}, allowGetters = true)
     private Permission permission;
 
+    @Column(nullable = false)
+    private Integer is_read;
+
+    @Column(nullable = false)
+    private Integer is_create;
+
+    @Column(nullable = false)
+    private Integer is_update;
+
+    @Column(nullable = false)
+    private Integer is_delete;
+
+    @Column(nullable = false)
+    private Integer is_manage;
 }
