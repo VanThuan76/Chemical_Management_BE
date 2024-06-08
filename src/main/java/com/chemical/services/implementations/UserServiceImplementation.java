@@ -45,10 +45,10 @@ public class UserServiceImplementation implements UserService {
 
         log.info("this is role: " + role);
         user.setRole(role);
-        user.setCreatedBy("user");
-        user.setUpdatedBy("user");
-        user.setCreatedAt(new Date());
-        user.setUpdatedAt(new Date());
+        user.setCreated_by("user");
+        user.setUpdated_by("user");
+        user.setCreated_at(new Date());
+        user.setUpdated_at(new Date());
         log.info("save user in service: " + user);
 
         return userRepository.save(user);
@@ -109,8 +109,8 @@ public class UserServiceImplementation implements UserService {
                 throw new IllegalArgumentException("Không tìm thấy vai trò");
             }
             BeanUtils.copyProperties(updateRequest, user, GetNotNull.getNullPropertyNames(updateRequest));
-            user.setUpdatedBy("user");
-            user.setUpdatedAt(new Date());
+            user.setUpdated_by("user");
+            user.setUpdated_at(new Date());
             return userRepository.save(user);
         } else {
             throw new RecordNotFoundException("Người dùng không được tìm thấy");

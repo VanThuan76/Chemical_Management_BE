@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -64,10 +63,10 @@ public class RoleServiceImplementation implements RoleService {
 
         role.setName(createRequest.getName());
         role.setSlug(nameToSlug);
-        role.setCreatedBy("user");
-        role.setUpdatedBy("user");
-        role.setCreatedAt(new Date());
-        role.setUpdatedAt(new Date());
+        role.setCreated_by("user");
+        role.setUpdated_by("user");
+        role.setCreated_at(new Date());
+        role.setUpdated_at(new Date());
         log.info("save user in service: " + role);
 
         return roleRepository.save(role);
@@ -89,8 +88,8 @@ public class RoleServiceImplementation implements RoleService {
 
         role.setName(updateRequest.getName());
         role.setSlug(nameToSlug);
-        role.setUpdatedAt(new Date());
-        role.setUpdatedBy("user");
+        role.setUpdated_at(new Date());
+        role.setUpdated_by("user");
         return roleRepository.save(role);
     }
     @Override
@@ -98,7 +97,7 @@ public class RoleServiceImplementation implements RoleService {
         try {
             roleRepository.deleteById(roleId);
         } catch (Exception e) {
-            log.debug("Delete Event " + e.getMessage());
+            log.debug("Delete role " + e.getMessage());
             throw new LogicException("Unknown error");
         }
     }

@@ -14,21 +14,21 @@ import java.util.Date;
 @MappedSuperclass
 public class BaseEntity {
     @CreatedDate
-    @Column(name = "created_at")
-    private Date createdAt = new Date();
+    @Column
+    private Date created_at = new Date();
 
     @LastModifiedDate
-    @Column(name = "updated_at")
-    private Date updatedAt = new Date();
+    @Column
+    private Date updated_at = new Date();
 
     @JsonIgnore
     @CreatedBy
-    @Column(name = "created_by")
-    private String createdBy;
+    @Column
+    private String created_by;
 
     @JsonIgnore
     @LastModifiedBy
-    @Column(name = "updated_by")
-    private String updatedBy;
+    @Column
+    private String updated_by;
 }
 
