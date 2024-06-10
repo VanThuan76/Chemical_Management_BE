@@ -3,6 +3,8 @@ package com.chemical.services.implementations;
 import com.chemical.common.errors.ConflictException;
 import com.chemical.common.errors.LogicException;
 import com.chemical.common.errors.RecordNotFoundException;
+import com.chemical.common.query.SearchRequest;
+import com.chemical.common.query.SearchSpecification;
 import com.chemical.dto.request.UserCreateRequestDTO;
 import com.chemical.dto.request.UserUpdateRequestDTO;
 import com.chemical.dto.response.UserResponseDTO;
@@ -16,6 +18,9 @@ import com.chemical.utils.GetNotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -32,6 +37,16 @@ public class UserServiceImplementation implements UserService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+
+    @Override
+    public Page<UserResponseDTO> search(SearchRequest request) {
+        Pageable pageable = SearchSpecification.getPageable(request.getPage(), request.getSize());
+        SearchSpecification<User> specification = new SearchSpecification<>(request);
+        Page<User> userPage = userRepository.findAll(specification, pageable);
+        List<UserResponseDTO> userSearchResponses = userPage.getContent().stream()
+                .map(UserMapper::convertToUserResponse).toList();
+        return new PageImpl<>(userSearchResponses, pageable, userPage.getTotalElements());
+    }
 
     @Override
     @Transactional

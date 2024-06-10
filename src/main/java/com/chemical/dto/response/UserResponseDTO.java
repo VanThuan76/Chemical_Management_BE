@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import com.chemical.entity.Role;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -17,7 +16,4 @@ public class UserResponseDTO extends BaseDTO {
     private String avatar;
     private String gender;
     private Role role;
-    public List<String> getPermissions() {
-        return role.getPermissionKeys();
-    }
 }

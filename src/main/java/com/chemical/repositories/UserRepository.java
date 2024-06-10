@@ -1,6 +1,5 @@
 package com.chemical.repositories;
 
-import com.chemical.dto.response.UserResponseDTO;
 import com.chemical.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;

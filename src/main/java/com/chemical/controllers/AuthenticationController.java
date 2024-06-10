@@ -1,5 +1,6 @@
 package com.chemical.controllers;
 
+import com.chemical.dto.request.RefreshTokenDTO;
 import com.chemical.dto.response.LoginResponseDTO;
 import com.chemical.dto.response.UserResponseDTO;
 import jakarta.validation.Valid;
@@ -47,11 +48,26 @@ public class AuthenticationController {
         var auth = this.authenticationManager.authenticate(credentials);
 
         var token = tokenService.generateToken((User) auth.getPrincipal());
+        var refreshToken = tokenService.generateRefreshToken((User) auth.getPrincipal());
         UserResponseDTO loggedInUser = userServices.findByEmailAuth(data.email());
 
-        return BaseResponse.ok(new LoginResponseDTO(token, loggedInUser));
+        return BaseResponse.ok(new LoginResponseDTO(token, refreshToken, loggedInUser));
     }
 
+    /**
+     * Refreshes authentication token.
+     *
+     * @param refreshToken Object containing refresh token
+     * @return ResponseEntity containing new authentication token
+     */
+    @PostMapping(value = "/refresh-token")
+    public BaseResponse<String> refreshToken(@RequestBody RefreshTokenDTO refreshToken) {
+        String newToken = tokenService.refreshToken(refreshToken.getRefreshToken());
+        if (newToken == null) {
+            return (BaseResponse.badRequest("Invalid refresh token"));
+        }
+        return BaseResponse.ok(newToken);
+    }
     /**
      * Registers a new user.
      *

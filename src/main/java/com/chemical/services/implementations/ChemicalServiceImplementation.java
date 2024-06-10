@@ -2,6 +2,8 @@ package com.chemical.services.implementations;
 
 import com.chemical.common.errors.LogicException;
 import com.chemical.common.errors.RecordNotFoundException;
+import com.chemical.common.query.SearchRequest;
+import com.chemical.common.query.SearchSpecification;
 import com.chemical.dto.request.ChemicalCreateRequestDTO;
 import com.chemical.dto.request.ChemicalUpdateRequestDTO;
 import com.chemical.dto.response.ChemicalResponseDTO;
@@ -13,6 +15,9 @@ import com.chemical.utils.GetNotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -24,6 +29,16 @@ import java.util.List;
 public class ChemicalServiceImplementation implements ChemicalService {
 
     private final ChemicalRepository chemicalRepository;
+
+    @Override
+    public Page<ChemicalResponseDTO> search(SearchRequest request) {
+        Pageable pageable = SearchSpecification.getPageable(request.getPage(), request.getSize());
+        SearchSpecification<Chemical> specification = new SearchSpecification<>(request);
+        Page<Chemical> chemicalPage = chemicalRepository.findAll(specification, pageable);
+        List<ChemicalResponseDTO> chemicalSearchResponses = chemicalPage.getContent().stream()
+                .map(ChemicalMapper::convertToChemicalResponse).toList();
+        return new PageImpl<>(chemicalSearchResponses, pageable, chemicalPage.getTotalElements());
+    }
 
     @Override
     public List<ChemicalResponseDTO> getAllChemicals() {

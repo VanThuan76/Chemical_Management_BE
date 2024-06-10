@@ -2,6 +2,8 @@ package com.chemical.services.implementations;
 
 import com.chemical.common.errors.LogicException;
 import com.chemical.common.errors.RecordNotFoundException;
+import com.chemical.common.query.SearchRequest;
+import com.chemical.common.query.SearchSpecification;
 import com.chemical.dto.request.CustomerCreateRequestDTO;
 import com.chemical.dto.request.CustomerUpdateRequestDTO;
 import com.chemical.entity.Customer;
@@ -13,6 +15,9 @@ import com.chemical.utils.GetNotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -24,6 +29,16 @@ import java.util.List;
 public class CustomerServiceImplementation implements CustomerService {
 
     private final CustomerRepository customerRepository;
+
+    @Override
+    public Page<CustomerResponseDTO> search(SearchRequest request) {
+        Pageable pageable = SearchSpecification.getPageable(request.getPage(), request.getSize());
+        SearchSpecification<Customer> specification = new SearchSpecification<>(request);
+        Page<Customer> customerPage = customerRepository.findAll(specification, pageable);
+        List<CustomerResponseDTO> customerSearchResponses = customerPage.getContent().stream()
+                .map(CustomerMapper::convertToCustomerResponse).toList();
+        return new PageImpl<>(customerSearchResponses, pageable, customerPage.getTotalElements());
+    }
 
     @Override
     public List<CustomerResponseDTO> getAllCustomers() {

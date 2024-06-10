@@ -1,6 +1,8 @@
 package com.chemical.controllers;
 
+import com.chemical.common.BasePaginationResponse;
 import com.chemical.common.BaseResponse;
+import com.chemical.common.query.SearchRequest;
 import com.chemical.dto.request.CustomerCreateRequestDTO;
 import com.chemical.dto.request.CustomerUpdateRequestDTO;
 import com.chemical.dto.response.CustomerResponseDTO;
@@ -9,6 +11,7 @@ import com.chemical.services.CustomerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +25,11 @@ import java.util.List;
 public class CustomerController {
     public  final CustomerService customerService;
 
+    @PostMapping("/search")
+    public BasePaginationResponse<List<CustomerResponseDTO>> searchCustomer(@RequestBody SearchRequest request) {
+        Page<CustomerResponseDTO> page = customerService.search(request);
+        return BasePaginationResponse.ok(page.getContent(), request.getPage(), page.getTotalPages(), (int) page.getTotalElements());
+    }
     @GetMapping("/get-all")
     public BaseResponse<List<CustomerResponseDTO>> getAllCustomers() {
         List<CustomerResponseDTO> customers = customerService.getAllCustomers();
